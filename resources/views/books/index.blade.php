@@ -6,6 +6,16 @@
             <h2>Daftar Buku</h2>
             <a href="{{ route('books.create') }}" class="btn btn-primary">Tambah Buku</a>
         </div>
+        @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
+        @if(session('failed'))
+        <div class="alert alert-success">
+            {{ session('failed') }}
+        </div>
+        @endif
         <table class="table mt-3">
             <thead>
                 <tr>

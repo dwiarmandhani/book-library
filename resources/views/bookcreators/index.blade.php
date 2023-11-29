@@ -6,6 +6,16 @@
             <h2>Daftar Pencipta Buku</h2>
             <a href="{{ route('bookcreators.create') }}" class="btn btn-primary">Tambah Penulis Buku</a>
         </div>
+        @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
+        @if(session('failed'))
+        <div class="alert alert-success">
+            {{ session('failed') }}
+        </div>
+        @endif
         <!-- Tampilkan daftar pencipta buku dalam tabel -->
         <table class="table mt-3">
             <thead>

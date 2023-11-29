@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\BookCreator;
+use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
@@ -23,10 +24,21 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'description' => 'required|min:10',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'book_creator_id' => 'required|exists:book_creators,id',
+            // tambahkan validasi sesuai kebutuhan lainnya
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         $validatedData = $request->validate([
             'title' => 'required',
-            'description' => 'nullable',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'description' => 'required|min:10',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'book_creator_id' => 'required|exists:book_creators,id'
             // tambahkan validasi sesuai kebutuhan lainnya
         ]);
@@ -50,9 +62,20 @@ class BookController extends Controller
     }
     public function update(Request $request, Book $book)
     {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'description' => 'required|min:10',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'book_creator_id' => 'required|exists:book_creators,id',
+            // tambahkan validasi sesuai kebutuhan lainnya
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         $validatedData = $request->validate([
             'title' => 'required',
-            'description' => 'nullable',
+            'description' => 'required|min:10',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'book_creator_id' => 'required|exists:book_creators,id',
             // tambahkan validasi sesuai kebutuhan lainnya

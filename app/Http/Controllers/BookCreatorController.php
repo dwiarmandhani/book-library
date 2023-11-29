@@ -25,9 +25,11 @@ class BookCreatorController extends Controller
             // tambahkan validasi sesuai kebutuhan lainnya
         ]);
 
-        BookCreator::create($validatedData);
-
-        return redirect()->route('bookcreators.index')->with('success', 'Pencipta buku berhasil ditambahkan');
+        if (BookCreator::create($validatedData)) {
+            return redirect()->route('bookcreators.index')->with('success', 'Pencipta buku berhasil ditambahkan');
+        } else {
+            return redirect()->route('bookcreators.index')->with('failed', 'Pencipta buku gagal ditambahkan');
+        }
     }
 
     public function edit($creatorId)
@@ -48,9 +50,11 @@ class BookCreatorController extends Controller
             'name' => 'required',
         ]);
 
-        $creator->update($validatedData);
-
-        return redirect()->route('bookcreators.index')->with('success', 'Informasi pencipta buku berhasil diperbarui');
+        if ($creator->update($validatedData)) {
+            return redirect()->route('bookcreators.index')->with('success', 'Informasi pencipta buku berhasil diperbarui');
+        } else {
+            return redirect()->route('bookcreators.index')->with('failed', 'Informasi pencipta buku gagal diperbarui');
+        }
     }
 
 
@@ -61,8 +65,10 @@ class BookCreatorController extends Controller
         if (!$creator) {
             return redirect()->route('bookcreators.index')->with('error', 'Pencipta buku tidak ditemukan');
         }
-        $creator->delete();
-
-        return redirect()->route('bookcreators.index')->with('success', 'Pencipta buku berhasil dihapus');
+        if ($creator->delete()) {
+            return redirect()->route('bookcreators.index')->with('success', 'Pencipta buku berhasil dihapus');
+        } else {
+            return redirect()->route('bookcreators.index')->with('failed', 'Pencipta buku berhasil dihapus');
+        }
     }
 }
